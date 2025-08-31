@@ -12,6 +12,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppColors.of(context);
     return Scaffold(
+      backgroundColor: colors.ghostWhite,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

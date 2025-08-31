@@ -9,11 +9,13 @@ class AppColors {
   final Color white;
   final Color black;
   final Color grey900;
+  final Color ghostWhite;
 
   const AppColors({
     required this.white,
     required this.black,
     required this.grey900,
+    required this.ghostWhite,
   });
 
   static AppColors of(BuildContext context) {
@@ -24,11 +26,13 @@ class AppColors {
     white: Colors.white,
     black: Colors.black,
     grey900: Color(0xFF181818),
+    ghostWhite: Color(0xFFFCFAFF),
   );
 
   static const dark = AppColors(
     white: Colors.black,
     black: Colors.white,
     grey900: Colors.white,
+    ghostWhite: Color(0xFF1C1B1F),
   );
 }

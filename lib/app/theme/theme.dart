@@ -29,6 +29,8 @@ class AppTheme extends ThemeExtension<AppTheme> {
     final buttonTheme = FilledButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      foregroundColor: Colors.white,
+      backgroundColor: colors.purple600,
     );
 
     return base.copyWith(
