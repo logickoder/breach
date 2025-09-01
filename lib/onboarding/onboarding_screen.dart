@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../app/assets.dart';
 import '../app/theme/colors.dart';
+import '../auth/auth_screen.dart';
+import '../auth/domain/auth_screen_type.dart';
 
 class OnboardingScreen extends StatelessWidget {
   static const route = '/';
@@ -17,7 +20,7 @@ class OnboardingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/onboarding.gif'),
+            Image.asset(AppAssets.onboardingImage),
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsetsGeometry.symmetric(horizontal: 32),
@@ -49,7 +52,10 @@ class OnboardingScreen extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             FilledButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(
+                context,
+                AuthScreen.route(AuthScreenType.signUp),
+              ),
               child: Text(
                 'Join Breach',
                 style: GoogleFonts.spaceGrotesk().copyWith(

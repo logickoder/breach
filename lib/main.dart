@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'app/theme/colors.dart';
 import 'app/theme/theme.dart';
+import 'auth/auth_screen.dart';
+import 'auth/domain/auth_screen_type.dart';
 import 'onboarding/onboarding_screen.dart';
 
 void main() {
@@ -35,6 +37,9 @@ class MyApp extends StatelessWidget {
       },
       routes: {
         OnboardingScreen.route: (_) => const OnboardingScreen(),
+        for (var type in AuthScreenType.values) ...{
+          AuthScreen.route(type): (_) => AuthScreen(type: type),
+        },
       },
     );
   }

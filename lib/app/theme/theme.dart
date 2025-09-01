@@ -31,6 +31,12 @@ class AppTheme extends ThemeExtension<AppTheme> {
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       foregroundColor: Colors.white,
       backgroundColor: colors.purple600,
+      textStyle: GoogleFonts.inter().copyWith(
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+      ),
+      disabledBackgroundColor: colors.grey300,
+      disabledForegroundColor: Colors.white,
     );
 
     return base.copyWith(
@@ -58,15 +64,19 @@ class AppTheme extends ThemeExtension<AppTheme> {
       ),
       inputDecorationTheme: () {
         final border = OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: colors.purple600, width: 1),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: colors.grey200, width: 1),
         );
         return InputDecorationTheme(
           border: border,
+          outlineBorder: border.borderSide,
           enabledBorder: border,
-          focusedBorder: border,
-          contentPadding: EdgeInsets.symmetric(vertical: 12.5, horizontal: 14),
-          hintStyle: TextStyle(color: colors.grey900, fontSize: 12),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: border.borderRadius,
+            borderSide: BorderSide(color: colors.purple600, width: 1),
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          hintStyle: TextStyle(color: colors.grey900, fontSize: 14),
           prefixIconColor: colors.grey900,
           suffixIconColor: colors.grey900,
         );
