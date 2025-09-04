@@ -121,6 +121,21 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 
+  @override
+  void didChangeMetrics() {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final isKeyboardCurrentlyVisible = keyboardHeight > 0;
+
+    if (isKeyboardCurrentlyVisible != _isKeyboardVisible) {
+      _isKeyboardVisible = isKeyboardCurrentlyVisible;
+      if (_isKeyboardVisible) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    }
+  }
+
   Widget _buildForm() {
     final type = widget.type;
     return Column(
@@ -231,21 +246,6 @@ class _AuthScreenState extends State<AuthScreen>
         ),
       ],
     );
-  }
-
-  @override
-  void didChangeMetrics() {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final isKeyboardCurrentlyVisible = keyboardHeight > 0;
-
-    if (isKeyboardCurrentlyVisible != _isKeyboardVisible) {
-      _isKeyboardVisible = isKeyboardCurrentlyVisible;
-      if (_isKeyboardVisible) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
-      }
-    }
   }
 
   Widget _buildLabel(String text) {
