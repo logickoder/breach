@@ -1,3 +1,4 @@
+import 'package:breach/onboarding/welcome_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -265,7 +266,7 @@ class _AuthScreenState extends State<AuthScreen>
 
   void onSubmit() {
     if (_form.currentState?.validate() ?? false) {
-      // Process data.
+      Navigator.pushNamed(context, WelcomeScreen.route);
     }
   }
 

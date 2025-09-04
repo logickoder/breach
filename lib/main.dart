@@ -6,6 +6,7 @@ import 'app/theme/theme.dart';
 import 'auth/auth_screen.dart';
 import 'auth/domain/auth_screen_type.dart';
 import 'onboarding/onboarding_screen.dart';
+import 'onboarding/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         for (var type in AuthScreenType.values) ...{
           AuthScreen.route(type): (_) => AuthScreen(type: type),
         },
+        WelcomeScreen.route: (_) => const WelcomeScreen(),
       },
     );
   }
