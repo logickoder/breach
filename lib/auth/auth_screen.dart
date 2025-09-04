@@ -1,4 +1,3 @@
-import 'package:breach/onboarding/welcome_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../app/assets.dart';
 import '../app/theme/colors.dart';
+import 'auth_view_model.dart';
 import 'domain/auth_screen_type.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -21,13 +21,8 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  static final _emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+  late final _viewModel = AuthViewModel(widget.type);
   final _form = GlobalKey<FormState>();
-
-  final _buttonEnabled = ValueNotifier(false);
 
   late final AnimationController _animationController;
   late final Animation<Offset> _logoSlideAnimation;
@@ -36,9 +31,6 @@ class _AuthScreenState extends State<AuthScreen>
   @override
   void initState() {
     super.initState();
-
-    _email.addListener(_onTextChanged);
-    _password.addListener(_onTextChanged);
 
     _animationController = AnimationController(
       duration: Durations.medium4,
@@ -55,6 +47,10 @@ class _AuthScreenState extends State<AuthScreen>
             curve: Curves.easeInOut,
           ),
         );
+
+    _viewModel.addListener(() {
+      if (mounted) setState(() {});
+    });
 
     WidgetsBinding.instance.addObserver(this);
   }
@@ -168,49 +164,35 @@ class _AuthScreenState extends State<AuthScreen>
         const SizedBox(height: 48),
         _buildLabel('Email'),
         TextFormField(
-          controller: _email,
+          controller: _viewModel.email,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             hintText: 'Enter email',
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Email is required';
-            }
-            if (!_emailRegex.hasMatch(value)) {
-              return 'Enter a valid email';
-            }
-            return null;
-          },
+          validator: _viewModel.validateEmail,
         ),
         const SizedBox(height: 38),
         _buildLabel('Password'),
         TextFormField(
-          controller: _password,
+          controller: _viewModel.password,
           keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
             hintText: 'Enter password',
           ),
           obscureText: true,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Password is required';
-            }
-            if (type == AuthScreenType.signUp && value.length < 6) {
-              return 'Password must be at least 6 characters';
-            }
-            return null;
-          },
+          validator: _viewModel.validatePassword,
         ),
         const SizedBox(height: 38),
-        ValueListenableBuilder(
-          valueListenable: _buttonEnabled,
-          builder: (_, enabled, __) => FilledButton(
-            onPressed: enabled ? onSubmit : null,
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.of(context).grey900,
-            ),
-            child: Text('Continue'),
+        FilledButton(
+          onPressed: _viewModel.buttonEnabled ? onSubmit : null,
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.of(context).grey900,
+          ),
+          child: AnimatedSwitcher(
+            duration: Durations.medium4,
+            child: _viewModel.loading
+                ? const CircularProgressIndicator()
+                : const Text('Continue'),
           ),
         ),
         const SizedBox(height: 22),
@@ -259,22 +241,15 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 
-  void _onTextChanged() {
-    _buttonEnabled.value =
-        (_email.text.trim().isNotEmpty && _password.text.isNotEmpty);
-  }
-
   void onSubmit() {
     if (_form.currentState?.validate() ?? false) {
-      Navigator.pushNamed(context, WelcomeScreen.route);
+      _viewModel.submit();
     }
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
-    _buttonEnabled.dispose();
+    _viewModel.dispose();
     _animationController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();

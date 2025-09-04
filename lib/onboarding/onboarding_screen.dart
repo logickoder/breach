@@ -1,9 +1,10 @@
-import 'package:breach/onboarding/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../app/assets.dart';
 import '../app/theme/colors.dart';
+import '../auth/auth_screen.dart';
+import '../auth/domain/auth_screen_type.dart';
 
 class OnboardingScreen extends StatelessWidget {
   static const route = '/';
@@ -53,8 +54,8 @@ class OnboardingScreen extends StatelessWidget {
             FilledButton(
               onPressed: () => Navigator.pushNamed(
                 context,
-                // AuthScreen.route(AuthScreenType.signUp),
-                WelcomeScreen.route,
+                AuthScreen.route(AuthScreenType.signUp),
+                // WelcomeScreen.route,
               ),
               style: FilledButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
