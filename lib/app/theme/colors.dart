@@ -11,8 +11,10 @@ class AppColors {
   final Color grey200;
   final Color grey300;
   final Color grey600;
+  final Color grey700;
   final Color grey900;
   final Color ghostWhite;
+  final Color paleSilver;
 
   const AppColors({
     required this.white,
@@ -20,8 +22,10 @@ class AppColors {
     required this.grey200,
     required this.grey300,
     required this.grey600,
+    required this.grey700,
     required this.grey900,
     required this.ghostWhite,
+    required this.paleSilver,
   });
 
   static AppColors of(BuildContext context) {
@@ -34,8 +38,10 @@ class AppColors {
     grey200: Color(0xFFE7E7E7),
     grey300: Color(0xFFD6D6D6),
     grey600: Color(0xFF6A6A6A),
+    grey700: Color(0xFF565656),
     grey900: Color(0xFF181818),
     ghostWhite: Color(0xFFFCFAFF),
+    paleSilver: Color(0xFFC7C4BC),
   );
 
   static const dark = AppColors(
@@ -44,7 +50,9 @@ class AppColors {
     grey200: Color(0xFF2C2C2C),
     grey300: Color(0xFF3D3D3D),
     grey600: Color(0xFF9D9D9D),
+    grey700: Color(0xFFB1B1B1),
     grey900: Colors.white,
     ghostWhite: Color(0xFF1C1B1F),
+    paleSilver: Color(0xFF5A5955),
   );
 }

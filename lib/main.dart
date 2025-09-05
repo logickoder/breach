@@ -1,4 +1,3 @@
-import 'package:breach/auth/domain/usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toastification/toastification.dart';
@@ -7,13 +6,16 @@ import 'app/theme/colors.dart';
 import 'app/theme/theme.dart';
 import 'auth/auth_screen.dart';
 import 'auth/domain/auth_screen_type.dart';
+import 'auth/domain/usecase.dart';
+import 'home/home_screen.dart';
 import 'onboarding/onboarding_screen.dart';
+import 'onboarding/select_interests_screen.dart';
 import 'onboarding/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final isLoggedIn = await checkIsLoggedIn();
-  runApp(MyApp(isLoggedIn ? WelcomeScreen.route : OnboardingScreen.route));
+
+  runApp(MyApp(await AuthUseCase.startingRoute()));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
             AuthScreen.route(type): (_) => AuthScreen(type: type),
           },
           WelcomeScreen.route: (_) => const WelcomeScreen(),
+          SelectInterestsScreen.route: (_) => const SelectInterestsScreen(),
+          HomeScreen.route: (_) => const HomeScreen(),
         },
       ),
     );

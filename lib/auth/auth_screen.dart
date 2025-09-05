@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:toastification/toastification.dart';
 
 import '../app/assets.dart';
+import '../app/components/loading_indicator.dart';
 import '../app/theme/colors.dart';
 import 'auth_view_model.dart';
 import 'domain/auth_screen_type.dart';
@@ -194,11 +195,7 @@ class _AuthScreenState extends State<AuthScreen>
           child: AnimatedSwitcher(
             duration: Durations.medium4,
             child: _viewModel.loading
-                ? SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(color: colors.white),
-                  )
+                ? LoadingIndicator(color: colors.white)
                 : const Text('Continue'),
           ),
         ),
@@ -254,7 +251,7 @@ class _AuthScreenState extends State<AuthScreen>
       final error = await _viewModel.submit();
       final isError = error != null;
       toastification.show(
-        title: Text(isError ? 'An error occured' : 'Success'),
+        title: Text(isError ? 'An error occurred' : 'Success'),
         description: Text(
           isError
               ? error

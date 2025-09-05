@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app/assets.dart';
 import '../app/theme/colors.dart';
-import '../auth/auth_screen.dart';
-import '../auth/domain/auth_screen_type.dart';
+import 'select_interests_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const route = '/welcome';
@@ -46,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
               FilledButton(
                 onPressed: () => Navigator.pushNamed(
                   context,
-                  AuthScreen.route(AuthScreenType.signUp),
+                  SelectInterestsScreen.route,
                 ),
                 style: FilledButton.styleFrom(
                   backgroundColor: colors.grey900,

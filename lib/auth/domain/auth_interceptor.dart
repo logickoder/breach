@@ -1,8 +1,6 @@
-import 'dart:convert';
-
-import 'package:breach/auth/data/dto.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'usecase.dart';
 
 class AuthInterceptor extends Interceptor {
   @override
@@ -11,11 +9,9 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final creds = prefs.getString('creds');
-      if (creds != null && creds.isNotEmpty) {
-        final data = LoginResponse.fromJson(jsonDecode(creds));
-        options.headers['Authorization'] = 'Bearer ${data.token}';
+      final creds = await AuthUseCase.getCredentials();
+      if (creds != null) {
+        options.headers['Authorization'] = 'Bearer ${creds.token}';
       }
     } finally {
       handler.next(options);
