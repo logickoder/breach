@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
                 child: Row(
                   children: [
                     Icon(
@@ -134,6 +134,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+                child: Text(
+                  'Discover trending content from topics you care about in real time',
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: 12,
+                    color: colors.grey600,
+                  ),
                 ),
               ),
             ),
