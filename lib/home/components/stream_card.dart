@@ -35,7 +35,7 @@ class StreamCard extends StatelessWidget {
                   top: Radius.circular(16),
                 ),
                 child: Container(
-                  height: 120,
+                  height: 80,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -81,30 +81,46 @@ class StreamCard extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  stream.title,
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: colors.grey900,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    stream.title,
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: colors.grey900,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  stream.author,
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 12,
-                    color: colors.grey600,
+                  const SizedBox(height: 6),
+                  Expanded(
+                    child: Text(
+                      stream.content,
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 12,
+                        color: colors.grey600,
+                        height: 1.3,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 6),
+                  Text(
+                    stream.author,
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: 11,
+                      color: colors.grey500,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
