@@ -7,9 +7,8 @@ import '../data/model/blog_post.dart';
 
 class PostCard extends StatelessWidget {
   final BlogPost post;
-  final bool isLive;
 
-  const PostCard(this.post, {super.key, this.isLive = false});
+  const PostCard(this.post, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class PostCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (post.imageUrl != null && !isLive) ...{
+          if (post.imageUrl != null) ...{
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
@@ -59,6 +58,23 @@ class PostCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: colors.purple600.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    post.series,
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: colors.purple700,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Text(
                   post.title,
                   style: GoogleFonts.spaceGrotesk(
