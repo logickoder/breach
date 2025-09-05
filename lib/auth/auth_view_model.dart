@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/data/api_client.dart';
 import '../app/data/message_from_error.dart';
+import '../dashboard/dashboard_screen.dart';
+import '../onboarding/domain/usecase.dart';
+import '../onboarding/welcome_screen.dart';
 import 'domain/auth_screen_type.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -29,8 +32,8 @@ class AuthViewModel extends ChangeNotifier {
 
   bool get buttonEnabled => _buttonEnabled;
 
-  Future<String?> submit() async {
-    if (_loading) return null;
+  Future<(String?, String?)> submit() async {
+    if (_loading) return (null, null);
 
     try {
       _loading = true;
@@ -50,9 +53,17 @@ class AuthViewModel extends ChangeNotifier {
 
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('creds', jsonEncode(response.data));
-      return null;
+
+      if (type == AuthScreenType.signIn) {
+        // check if the user has selected interests
+        final interests = await OnboardingUseCase.getSavedInterests();
+        if (interests.isNotEmpty) {
+          return (null, DashboardScreen.route);
+        }
+      }
+      return (null, WelcomeScreen.route);
     } catch (e, stackTrace) {
-      return messageFromError(error: e, stackTrace: stackTrace);
+      return (messageFromError(error: e, stackTrace: stackTrace), null);
     } finally {
       _loading = false;
       notifyListeners();

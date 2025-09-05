@@ -1,10 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:toastification/toastification.dart';
 
-import '../app/assets.dart';
 import '../app/components/loading_indicator.dart';
 import '../app/theme/colors.dart';
 import 'auth_view_model.dart';
@@ -27,28 +25,10 @@ class _AuthScreenState extends State<AuthScreen>
   final _form = GlobalKey<FormState>();
 
   late final AnimationController _animationController;
-  late final Animation<Offset> _logoSlideAnimation;
-  var _isKeyboardVisible = false;
 
   @override
   void initState() {
     super.initState();
-
-    _animationController = AnimationController(
-      duration: Durations.medium4,
-      vsync: this,
-    );
-
-    _logoSlideAnimation =
-        Tween<Offset>(
-          begin: Offset.zero,
-          end: const Offset(0, -1),
-        ).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeInOut,
-          ),
-        );
 
     _viewModel.addListener(() {
       if (mounted) setState(() {});
@@ -69,10 +49,6 @@ class _AuthScreenState extends State<AuthScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SlideTransition(
-                position: _logoSlideAnimation,
-                child: SvgPicture.asset(AppAssets.logoIcon),
-              ),
               Spacer(flex: 1),
               Expanded(
                 flex: 0,
@@ -118,21 +94,6 @@ class _AuthScreenState extends State<AuthScreen>
         ),
       ),
     );
-  }
-
-  @override
-  void didChangeMetrics() {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final isKeyboardCurrentlyVisible = keyboardHeight > 0;
-
-    if (isKeyboardCurrentlyVisible != _isKeyboardVisible) {
-      _isKeyboardVisible = isKeyboardCurrentlyVisible;
-      if (_isKeyboardVisible) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
-      }
-    }
   }
 
   Widget _buildForm() {
@@ -248,7 +209,7 @@ class _AuthScreenState extends State<AuthScreen>
 
   void onSubmit() async {
     if (_form.currentState?.validate() ?? false) {
-      final error = await _viewModel.submit();
+      final (error, route) = await _viewModel.submit();
       final isError = error != null;
       toastification.show(
         title: Text(isError ? 'An error occurred' : 'Success'),
@@ -262,6 +223,13 @@ class _AuthScreenState extends State<AuthScreen>
         type: isError ? ToastificationType.error : ToastificationType.success,
         autoCloseDuration: const Duration(seconds: 5),
       );
+      if (route != null && mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          route,
+          (route) => false,
+        );
+      }
     }
   }
 
