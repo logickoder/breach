@@ -1,7 +1,10 @@
-import 'package:breach/app/logger.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/data/api_client.dart';
+import '../app/data/message_from_error.dart';
 import 'domain/auth_screen_type.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -26,8 +29,8 @@ class AuthViewModel extends ChangeNotifier {
 
   bool get buttonEnabled => _buttonEnabled;
 
-  Future<void> submit() async {
-    if (_loading) return;
+  Future<String?> submit() async {
+    if (_loading) return null;
 
     try {
       _loading = true;
@@ -37,15 +40,19 @@ class AuthViewModel extends ChangeNotifier {
         AuthScreenType.signIn => 'login',
         AuthScreenType.signUp => 'register',
       };
-      apiClient.post(
+      final response = await apiClient.post(
         '/auth/$path',
         data: {
           'email': email.text.trim(),
           'password': password.text,
         },
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('creds', jsonEncode(response.data));
+      return null;
     } catch (e, stackTrace) {
-      logger.e('Auth error', error: e, stackTrace: stackTrace);
+      return messageFromError(error: e, stackTrace: stackTrace);
     } finally {
       _loading = false;
       notifyListeners();

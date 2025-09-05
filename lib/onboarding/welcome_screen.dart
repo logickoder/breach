@@ -50,6 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 style: FilledButton.styleFrom(
                   backgroundColor: colors.grey900,
+                  foregroundColor: colors.white,
                 ),
                 child: Text('Let\'s begin!'),
               ),

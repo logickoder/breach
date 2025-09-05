@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:toastification/toastification.dart';
 
 import '../app/assets.dart';
 import '../app/theme/colors.dart';
@@ -135,6 +136,7 @@ class _AuthScreenState extends State<AuthScreen>
 
   Widget _buildForm() {
     final type = widget.type;
+    final colors = AppColors.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -186,12 +188,17 @@ class _AuthScreenState extends State<AuthScreen>
         FilledButton(
           onPressed: _viewModel.buttonEnabled ? onSubmit : null,
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.of(context).grey900,
+            backgroundColor: colors.grey900,
+            foregroundColor: colors.white,
           ),
           child: AnimatedSwitcher(
             duration: Durations.medium4,
             child: _viewModel.loading
-                ? const CircularProgressIndicator()
+                ? SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(color: colors.white),
+                  )
                 : const Text('Continue'),
           ),
         ),
@@ -225,6 +232,7 @@ class _AuthScreenState extends State<AuthScreen>
               ],
               style: const TextStyle(fontSize: 12),
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ],
@@ -241,9 +249,22 @@ class _AuthScreenState extends State<AuthScreen>
     );
   }
 
-  void onSubmit() {
+  void onSubmit() async {
     if (_form.currentState?.validate() ?? false) {
-      _viewModel.submit();
+      final error = await _viewModel.submit();
+      final isError = error != null;
+      toastification.show(
+        title: Text(isError ? 'An error occured' : 'Success'),
+        description: Text(
+          isError
+              ? error
+              : widget.type == AuthScreenType.signIn
+              ? 'Signed in successfully'
+              : 'Account created successfully',
+        ),
+        type: isError ? ToastificationType.error : ToastificationType.success,
+        autoCloseDuration: const Duration(seconds: 5),
+      );
     }
   }
 
