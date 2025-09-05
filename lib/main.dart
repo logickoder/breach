@@ -7,7 +7,7 @@ import 'app/theme/theme.dart';
 import 'auth/auth_screen.dart';
 import 'auth/domain/auth_screen_type.dart';
 import 'auth/domain/usecase.dart';
-import 'home/home_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 import 'onboarding/onboarding_screen.dart';
 import 'onboarding/select_interests_screen.dart';
 import 'onboarding/welcome_screen.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           },
           WelcomeScreen.route: (_) => const WelcomeScreen(),
           SelectInterestsScreen.route: (_) => const SelectInterestsScreen(),
-          HomeScreen.route: (_) => const HomeScreen(),
+          DashboardScreen.route: (_) => const DashboardScreen(),
         },
       ),
     );

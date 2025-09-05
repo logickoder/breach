@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../home/home_screen.dart';
+import '../../dashboard/dashboard_screen.dart';
 import '../../onboarding/domain/usecase.dart';
 import '../../onboarding/onboarding_screen.dart';
 import '../../onboarding/welcome_screen.dart';
@@ -31,14 +31,14 @@ class AuthUseCase {
 
     final interestsSkipped = await OnboardingUseCase.interestSelectionSkipped();
     if (interestsSkipped) {
-      return HomeScreen.route;
+      return DashboardScreen.route;
     }
 
-    final interests = await OnboardingUseCase.getSavedInterest();
+    final interests = await OnboardingUseCase.getSavedInterests();
     if (interests.isEmpty) {
       return WelcomeScreen.route;
     }
 
-    return HomeScreen.route;
+    return DashboardScreen.route;
   }
 }

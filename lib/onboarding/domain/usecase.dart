@@ -10,7 +10,7 @@ import '../../auth/domain/usecase.dart';
 import '../data/model/interest.dart';
 
 class OnboardingUseCase {
-  static Future<List<Interest>> getSavedInterest() async {
+  static Future<List<Interest>> getSavedInterests() async {
     final prefs = await SharedPreferences.getInstance();
     var interests = prefs.getStringList('interests') ?? [];
     if (interests.isNotEmpty) {

@@ -4,7 +4,7 @@ import 'package:toastification/toastification.dart';
 import '../app/assets.dart';
 import '../app/components/loading_indicator.dart';
 import '../app/theme/colors.dart';
-import '../home/home_screen.dart';
+import '../dashboard/dashboard_screen.dart';
 import 'components/category_chip.dart';
 import 'domain/usecase.dart';
 import 'select_interests_view_model.dart';
@@ -192,13 +192,13 @@ class _SelectInterestsScreenState extends State<SelectInterestsScreen>
       autoCloseDuration: const Duration(seconds: 5),
     );
     if (mounted) {
-      Navigator.pushNamed(context, HomeScreen.route);
+      Navigator.pushNamed(context, DashboardScreen.route);
     }
   }
 
   void _onSkip() {
     OnboardingUseCase.skipInterestSelection();
-    Navigator.pushNamed(context, HomeScreen.route);
+    Navigator.pushNamed(context, DashboardScreen.route);
   }
 
   @override
