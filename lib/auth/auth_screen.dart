@@ -20,11 +20,12 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+    with SingleTickerProviderStateMixin {
   late final _viewModel = AuthViewModel(widget.type);
   final _form = GlobalKey<FormState>();
 
   late final AnimationController _animationController;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
@@ -34,7 +35,22 @@ class _AuthScreenState extends State<AuthScreen>
       if (mounted) setState(() {});
     });
 
-    WidgetsBinding.instance.addObserver(this);
+    // Simple fade animation
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
+    // Start the animation
+    _animationController.forward();
   }
 
   @override
@@ -103,27 +119,33 @@ class _AuthScreenState extends State<AuthScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          switch (type) {
-            AuthScreenType.signUp => 'Join Breach',
-            AuthScreenType.signIn => 'Welcome back',
-          },
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.w600,
+        FadeTransition(
+          opacity: _fadeAnimation,
+          child: Text(
+            switch (type) {
+              AuthScreenType.signUp => 'Join Breach',
+              AuthScreenType.signIn => 'Welcome back',
+            },
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          switch (type) {
-            AuthScreenType.signUp =>
+        FadeTransition(
+          opacity: _fadeAnimation,
+          child: Text(
+            switch (type) {
+              AuthScreenType.signUp =>
               'Break through the noise and discover content that matters to you in under 3 minutes.',
-            AuthScreenType.signIn =>
+              AuthScreenType.signIn =>
               'Sign in to continue to your personalized feed and stay updated with the latest content.',
-          },
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16),
+            },
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
         const SizedBox(height: 48),
         _buildLabel('Email'),
@@ -237,7 +259,6 @@ class _AuthScreenState extends State<AuthScreen>
   void dispose() {
     _viewModel.dispose();
     _animationController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }

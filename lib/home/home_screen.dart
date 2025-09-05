@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             _buildStreams(),
 
             const SliverToBoxAdapter(
-              child: SizedBox(height: 100), // Bottom padding for FAB
+              child: SizedBox(height: 100),
             ),
           ],
         ),
@@ -184,11 +184,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: state.categories.length + 1,
-              // +1 for "All" option
               separatorBuilder: (_, _) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  // "All" option
                   return CategoryFilterChip(
                     name: 'All',
                     isSelected: state.selectedCategory?.id == null,
